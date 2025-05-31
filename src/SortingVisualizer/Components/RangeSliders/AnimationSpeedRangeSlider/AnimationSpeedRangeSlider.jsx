@@ -45,7 +45,7 @@ export default class AnimationSpeedRangeSlider extends Component {
         <AnimationSpeedSlider
           id="animationSpeedSlider"
           min={10}
-          max={200}
+          max={500}
           defaultValue={this.state.animationSpeed}
           valueLabelDisplay="auto"
           onChangeCommitted={this.props.onChangeAnimationSpeedRangeSlider}

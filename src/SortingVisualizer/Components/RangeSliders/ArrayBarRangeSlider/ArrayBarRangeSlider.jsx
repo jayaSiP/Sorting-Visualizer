@@ -1,5 +1,3 @@
-// ## This component includes a range slider for changing Array Size. ## //
-
 import React, { Component } from "react";
 import { Slider, withStyles } from "@material-ui/core";
 import "./ArrayBarRangeSlider.css";
@@ -40,7 +38,7 @@ export default class ArrayBarRangeSlider extends Component {
   render() {
     return (
       <div className="range-slider-container">
-        <p id="text-array-size">Array Size</p>
+        <p id="text-array-size">Number of Arrays</p>
         <ArrayBarSlider
           id="arrayBarSlider"
           min={2}

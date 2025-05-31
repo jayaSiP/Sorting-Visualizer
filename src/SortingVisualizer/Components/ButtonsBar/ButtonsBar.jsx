@@ -1,8 +1,5 @@
-// ## This component includes the buttons for sorting algorithms and also generating new array. ## //
-
 import React, { Component } from "react";
 import "./ButtonsBar.css";
-
 export default class ButtonsBar extends Component {
   render() {
     return (
