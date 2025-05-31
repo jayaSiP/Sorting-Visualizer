@@ -2,7 +2,7 @@ import getBubbleSortAnimations from "./getBubbleSortAnimations";
 import {
   changeBackgroundColor,
   changeBoxShadow,
-  swapBarsRef,
+  swapBars,
   resetBarStyleDefault,
   disableButtons,
   enableButtons,
@@ -22,8 +22,8 @@ const BubbleSort = (array, animationSpeed, barRefs) => {
 
     const promise1 = new Promise((resolve) => {
       setTimeout(() => {
-        const barOne = barRefs.current[comparingElement1];
-        const barTwo = barRefs.current[comparingElement2];
+        const barOne = swapBars.current[comparingElement1];
+        const barTwo = swapBars.current[comparingElement2];
 
         changeBackgroundColor(barOne, "rgba(255,165,0, 0.9)");
         changeBackgroundColor(barTwo, "rgba(255,165,0, 0.9)");
