@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "./Components/Header/Header.jsx";
 import ButtonsBar from "./Components/ButtonsBar/ButtonsBar.jsx";
 import ArrayBar from "./Components/ArrayBar/ArrayBar.jsx";
@@ -9,80 +9,67 @@ import SelectionSort from "./SortingAlgorithms/SelectionSort/SelectionSort.js";
 import InsertionSort from "./SortingAlgorithms/InsertionSort/InsertionSort.js";
 import "./SortingVisualizer.css";
 import ResetEffect from "./sounds/ResetEffect.mp3";
-export default class SortingVisualizer extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      array: [],
-      animationSpeed: 50,
-      numberOfArrayBars: 10,
-    };
+const SortingVisualizer = () => {
+  const [array, setArray] = useState([]);
+  const [animationSpeed, setAnimationSpeed] = useState(50);
+  const [numberOfArrayBars, setNumberOfArrayBars] = useState(10);
 
-    this.generateNewArray = this.generateNewArray.bind(this);
-    this.bubbleSort = this.bubbleSort.bind(this);
-    this.selectionSort = this.selectionSort.bind(this);
-    this.insertionSort = this.insertionSort.bind(this);
-    this.onChangeArrayBarRangeSlider = this.onChangeArrayBarRangeSlider.bind(
-      this
-    );
-    this.onChangeAnimationSpeedRangeSlider = this.onChangeAnimationSpeedRangeSlider.bind(
-      this
-    );
-  }
+  // Create refs for each bar (array length changes dynamically)
+  const barRefs = useRef([]);
 
-  componentDidMount() {
-    this.generateNewArray();
-  }
-  generateNewArray() {
-    const array = [];
-    for (let i = 0; i < this.state.numberOfArrayBars; i++) {
-      array.push(randomIntFromInterval(5, 70));
+  // Generate new array when component mounts or numberOfArrayBars changes
+  useEffect(() => {
+    generateNewArray();
+  }, [numberOfArrayBars]);
+
+  const generateNewArray = () => {
+    const newArray = [];
+    for (let i = 0; i < numberOfArrayBars; i++) {
+      newArray.push(randomIntFromInterval(5, 70));
     }
     playAudio(ResetEffect);
-    this.setState({ array: array });
-  }
-  onChangeArrayBarRangeSlider = (event, value) => {
-    this.setState({ numberOfArrayBars: value });
-    this.generateNewArray();
+    setArray(newArray);
   };
 
-  onChangeAnimationSpeedRangeSlider = (event, value) => {
-    this.setState({ animationSpeed: value });
+  const onChangeArrayBarRangeSlider = (event, value) => {
+    setNumberOfArrayBars(value);
   };
 
-  bubbleSort = () => {
-    BubbleSort(this.state.array, this.state.animationSpeed);
-  };
-  selectionSort = () => {
-    SelectionSort(this.state.array, this.state.animationSpeed);
+  const onChangeAnimationSpeedRangeSlider = (event, value) => {
+    setAnimationSpeed(value);
   };
 
-  insertionSort = () => {
-    InsertionSort(this.state.array, this.state.animationSpeed);
+  const bubbleSort = () => {
+    BubbleSort(array, animationSpeed, barRefs);
   };
 
+  const selectionSort = () => {
+    SelectionSort(array, animationSpeed, barRefs);
+  };
 
-  render() {
-    return (
-      <div className="main-container">
-        <Header />
-        <ButtonsBar
-          generateNewArray={this.generateNewArray}
-          bubbleSort={this.bubbleSort}
-          selectionSort={this.selectionSort}
-          insertionSort={this.insertionSort}
-        />
-        <ArrayBar array={this.state.array} />
-        <RangeSlider
-          numberOfArrayBars={this.state.numberOfArrayBars}
-          animationSpeed={this.state.animationSpeed}
-          onChangeArrayBarRangeSlider={this.onChangeArrayBarRangeSlider}
-          onChangeAnimationSpeedRangeSlider={
-            this.onChangeAnimationSpeedRangeSlider
-          }
-        />
-      </div>
-    );
-  }
-}
+  const insertionSort = () => {
+    InsertionSort(array, animationSpeed, barRefs);
+  };
+
+  return (
+    <div className="main-container">
+      <Header />
+      <ButtonsBar
+        generateNewArray={generateNewArray}
+        bubbleSort={bubbleSort}
+        selectionSort={selectionSort}
+        insertionSort={insertionSort}
+      />
+      <ArrayBar array={array} barRefs={barRefs} />
+      <RangeSlider
+        numberOfArrayBars={numberOfArrayBars}
+        animationSpeed={animationSpeed}
+        onChangeArrayBarRangeSlider={onChangeArrayBarRangeSlider}
+        onChangeAnimationSpeedRangeSlider={onChangeAnimationSpeedRangeSlider}
+      />
+    </div>
+  );
+};
+
+export default SortingVisualizer;

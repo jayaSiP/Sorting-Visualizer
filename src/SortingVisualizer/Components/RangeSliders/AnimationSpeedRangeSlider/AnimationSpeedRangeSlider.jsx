@@ -1,6 +1,4 @@
-// ## This component includes a range slider for changing Animation Speed. ## //
-
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Slider, withStyles } from "@material-ui/core";
 import "./AnimationSpeedRangeSlider.css";
 
@@ -29,28 +27,22 @@ const AnimationSpeedSlider = withStyles({
   },
 })(Slider);
 
-export default class AnimationSpeedRangeSlider extends Component {
-  constructor(props) {
-    super(props);
+const AnimationSpeedRangeSlider = ({ animationSpeed, onChangeAnimationSpeedRangeSlider }) => {
+  const [speed, setSpeed] = useState(animationSpeed);
+  return (
+    <div className="range-slider-container">
+      <p id="text-animation-speed">Animation Speed (ms)</p>
+      <AnimationSpeedSlider
+        id="animationSpeedSlider"
+        min={10}
+        max={500}
+        defaultValue={speed}
+        valueLabelDisplay="auto"
+        onChangeCommitted={onChangeAnimationSpeedRangeSlider}
+        onChange={(e, val) => setSpeed(val)}
+      />
+    </div>
+  );
+};
 
-    this.state = {
-      animationSpeed: this.props.animationSpeed,
-    };
-  }
-
-  render() {
-    return (
-      <div className="range-slider-container">
-        <p id="text-animation-speed">Animation Speed (ms)</p>
-        <AnimationSpeedSlider
-          id="animationSpeedSlider"
-          min={10}
-          max={500}
-          defaultValue={this.state.animationSpeed}
-          valueLabelDisplay="auto"
-          onChangeCommitted={this.props.onChangeAnimationSpeedRangeSlider}
-        />
-      </div>
-    );
-  }
-}
+export default AnimationSpeedRangeSlider;

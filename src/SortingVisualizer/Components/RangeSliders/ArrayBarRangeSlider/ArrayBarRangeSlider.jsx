@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Slider, withStyles } from "@material-ui/core";
 import "./ArrayBarRangeSlider.css";
 
@@ -27,29 +27,25 @@ const ArrayBarSlider = withStyles({
   },
 })(Slider);
 
-export default class ArrayBarRangeSlider extends Component {
-  constructor(props) {
-    super(props);
+const ArrayBarRangeSlider = ({ numberOfArrayBars, onChangeArrayBarRangeSlider }) => {
+  const [bars, setBars] = useState(numberOfArrayBars);
 
-    this.state = {
-      numberOfArrayBars: this.props.numberOfArrayBars,
-    };
-  }
-  render() {
-    return (
-      <div className="range-slider-container">
-        <p id="text-array-size">Number of Arrays</p>
-        <ArrayBarSlider
-          id="arrayBarSlider"
-          min={2}
-          max={14}
-          step={1}
-          defaultValue={this.state.numberOfArrayBars}
-          valueLabelDisplay="auto"
-          marks
-          onChangeCommitted={this.props.onChangeArrayBarRangeSlider}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="range-slider-container">
+      <p id="text-array-size">Number of Arrays</p>
+      <ArrayBarSlider
+        id="arrayBarSlider"
+        min={2}
+        max={14}
+        step={1}
+        defaultValue={bars}
+        valueLabelDisplay="auto"
+        marks
+        onChangeCommitted={onChangeArrayBarRangeSlider}
+        onChange={(e, val) => setBars(val)}
+      />
+    </div>
+  );
+};
+
+export default ArrayBarRangeSlider;
