@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { Slider, withStyles } from "@material-ui/core";
+import Slider from "@mui/material/Slider";
+import { styled } from "@mui/material/styles";
 import "./ArrayBarRangeSlider.css";
 
-const ArrayBarSlider = withStyles({
-  root: {
-    color: "rgba(100, 180, 255, 1)",
-    inlineSize: "60%",
-    padding: 10,
-  },
-  thumb: {
+const ArrayBarSlider = styled(Slider)({
+  color: "rgba(100, 180, 255, 1)",
+  inlineSize: "60%",
+  padding: 10,
+  '& .MuiSlider-thumb': {
     height: 12,
     width: 12,
     backgroundColor: "#fff",
@@ -16,16 +15,15 @@ const ArrayBarSlider = withStyles({
     marginTop: -4,
     marginLeft: 0,
   },
-  active: {},
-  track: {
+  '& .MuiSlider-track': {
     height: 4,
     borderRadius: 4,
   },
-  rail: {
+  '& .MuiSlider-rail': {
     height: 4,
     borderRadius: 4,
   },
-})(Slider);
+});
 
 const ArrayBarRangeSlider = ({ numberOfArrayBars, onChangeArrayBarRangeSlider }) => {
   const [bars, setBars] = useState(numberOfArrayBars);

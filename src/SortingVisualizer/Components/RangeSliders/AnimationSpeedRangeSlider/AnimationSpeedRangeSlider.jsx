@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { Slider, withStyles } from "@material-ui/core";
+import Slider from "@mui/material/Slider";
+import { styled } from "@mui/material/styles";
 import "./AnimationSpeedRangeSlider.css";
 
-const AnimationSpeedSlider = withStyles({
-  root: {
-    color: "rgba(100, 180, 255, 1)",
-    inlineSize: "60%",
-    padding: 10,
-  },
-  thumb: {
+const AnimationSpeedSlider = styled(Slider)({
+  color: "rgba(100, 180, 255, 1)",
+  inlineSize: "60%",
+  padding: 10,
+  '& .MuiSlider-thumb': {
     height: 12,
     width: 12,
     backgroundColor: "#fff",
@@ -16,19 +15,19 @@ const AnimationSpeedSlider = withStyles({
     marginTop: -4,
     marginLeft: 0,
   },
-  active: {},
-  track: {
+  '& .MuiSlider-track': {
     height: 4,
     borderRadius: 4,
   },
-  rail: {
+  '& .MuiSlider-rail': {
     height: 4,
     borderRadius: 4,
   },
-})(Slider);
+});
 
 const AnimationSpeedRangeSlider = ({ animationSpeed, onChangeAnimationSpeedRangeSlider }) => {
   const [speed, setSpeed] = useState(animationSpeed);
+
   return (
     <div className="range-slider-container">
       <p id="text-animation-speed">Animation Speed (ms)</p>
