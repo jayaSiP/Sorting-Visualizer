@@ -7,8 +7,9 @@ const getInsertionSortAnimations = (array) => {
     animations.push(i, j, false, i - 1);
     while (j >= 0 && array[j] > key) {
       [array[j], array[j + 1]] = [array[j + 1], array[j]];
-      animations.push(j, j + 1, false, i);
-      animations.push(j, j + 1, true, i);
+      animations.push(j + 1, j, false, i);
+animations.push(j + 1, j, true, i);
+
       j--;
     }
   }

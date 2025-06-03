@@ -23,6 +23,7 @@ const SelectionSort = async (array, animationSpeed, barRefs) => {
           barRefs.current[comparingElement1].style.height = barRefs.current[minIndexElement].style.height;
           barRefs.current[minIndexElement].style.height = tempHeight;
         }
+
         resolve();
       }, animationSpeed);
     });
@@ -41,14 +42,17 @@ const SelectionSort = async (array, animationSpeed, barRefs) => {
     });
   }
 
-  setTimeout(() => {
-    for (let i = 0; i < array.length; i++) {
-      barRefs.current[i].style.backgroundColor = "";
-      barRefs.current[i].style.boxShadow = "";
-    }
-    playCompletedSoundEffect();
-    enableButtons();
-  }, animationSpeed);
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      for (let i = 0; i < array.length; i++) {
+        barRefs.current[i].style.backgroundColor = "";
+        barRefs.current[i].style.boxShadow = "";
+      }
+      playCompletedSoundEffect();
+      enableButtons();
+      resolve();
+    }, animationSpeed);
+  });
 };
 
 export default SelectionSort;
