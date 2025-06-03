@@ -5,7 +5,7 @@ import {
   enableButtons,
   disableButtons,
   playCompletedSoundEffect,
-} from "../../functions.js";
+} from "../../HelperFunctions.js";
 
 const InsertionSort = async (array, animationSpeed, barRefs) => {
   disableButtons();
