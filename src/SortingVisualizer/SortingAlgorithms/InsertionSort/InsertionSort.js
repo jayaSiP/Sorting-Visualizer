@@ -1,66 +1,48 @@
-import getInsertionSortAnimations from "./getInsertionSortAnimations";
 import {
+  swapBars,
   changeBackgroundColor,
   changeBoxShadow,
-  swapBars,
-  resetBarStyleDefault,
-  disableButtons,
   enableButtons,
+  disableButtons,
   playCompletedSoundEffect,
-} from "../../HelperFunctions.js";
+} from "../../functions.js";
 
-const InsertionSort = (array, animationSpeed, barRefs) => {
+const InsertionSort = async (array, animationSpeed, barRefs) => {
   disableButtons();
-  const animations = getInsertionSortAnimations(array);
 
-  for (let i = 0; i < animations.length; i += 4) {
-    const [idx1, idx2, doSwap, sortedTill] = [
-      animations[i],
-      animations[i + 1],
-      animations[i + 2],
-      animations[i + 3],
-    ];
+  const n = array.length;
+  for (let i = 1; i < n; i++) {
+    let key = array[i];
+    let j = i - 1;
 
-    const promise1 = new Promise((resolve) => {
-      setTimeout(() => {
-        const barOne = barRefs.current[idx1];
-        const barTwo = barRefs.current[idx2];
+    changeBackgroundColor(barRefs, i, "rgba(0,0,255, 0.9)");
 
-        changeBackgroundColor(barOne, "rgba(255,165,0, 0.9)");
-        changeBackgroundColor(barTwo, "rgba(255,165,0, 0.9)");
+    while (j >= 0 && array[j] > key) {
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          swapBars(barRefs, j + 1, j);
 
-        if (doSwap) {
-          changeBackgroundColor(barOne, "rgba(144,238,144, 0.9)");
-          changeBackgroundColor(barTwo, "rgba(144,238,144, 0.9)");
-          swapBars(barOne, barTwo);
-        }
-
-        resolve();
-      }, i * animationSpeed);
-    });
-
-    const promise2 = new Promise((resolve) => {
-      setTimeout(() => {
-        for (let j = 0; j <= sortedTill; j++) {
-          const bar = barRefs.current[j];
-          changeBackgroundColor(bar, "rgba(0, 164, 86, 0.6)");
-          changeBoxShadow(bar, "5px 5px 50px 5px rgba(0, 164, 86, 0.2)");
-        }
-
-        if (idx1 === array.length - 1 && idx2 === array.length - 1) {
+          array[j + 1] = array[j];
+          changeBackgroundColor(barRefs, j, "rgba(255,165,0, 0.9)");
+          changeBackgroundColor(barRefs, j + 1, "rgba(144,238,144, 0.9)");
           resolve();
-        }
-      }, (i + 4) * animationSpeed);
-    });
+        }, animationSpeed);
+      });
+      j--;
+    }
+    array[j + 1] = key;
 
-    Promise.all([promise1, promise2])
-      .then(playCompletedSoundEffect)
-      .then(enableButtons);
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        changeBackgroundColor(barRefs, j + 1, "rgba(0, 164, 86, 0.6)");
+        changeBoxShadow(barRefs, j + 1, "5px 5px 50px 5px rgba(0, 164, 86, 0.2)");
+        resolve();
+      }, animationSpeed);
+    });
   }
 
-  setTimeout(() => {
-    resetBarStyleDefault(barRefs);
-  }, (animations.length + 4) * animationSpeed);
+  playCompletedSoundEffect();
+  enableButtons();
 };
 
 export default InsertionSort;

@@ -15,10 +15,8 @@ const SortingVisualizer = () => {
   const [animationSpeed, setAnimationSpeed] = useState(50);
   const [numberOfArrayBars, setNumberOfArrayBars] = useState(10);
 
-  // Create refs for each bar (array length changes dynamically)
   const barRefs = useRef([]);
 
-  // Generate new array when component mounts or numberOfArrayBars changes
   useEffect(() => {
     generateNewArray();
   }, [numberOfArrayBars]);
@@ -41,15 +39,15 @@ const SortingVisualizer = () => {
   };
 
   const bubbleSort = () => {
-    BubbleSort(array, animationSpeed, barRefs);
+    BubbleSort([...array], animationSpeed, barRefs);
   };
 
   const selectionSort = () => {
-    SelectionSort(array, animationSpeed, barRefs);
+    SelectionSort([...array], animationSpeed, barRefs);
   };
 
   const insertionSort = () => {
-    InsertionSort(array, animationSpeed, barRefs);
+    InsertionSort([...array], animationSpeed, barRefs);
   };
 
   return (

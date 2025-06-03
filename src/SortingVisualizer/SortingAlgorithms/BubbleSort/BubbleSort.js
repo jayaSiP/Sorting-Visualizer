@@ -1,59 +1,52 @@
-import getBubbleSortAnimations from "./getBubbleSortAnimations";
 import {
+  swapBars,
   changeBackgroundColor,
   changeBoxShadow,
-  swapBars,
-  resetBarStyleDefault,
-  disableButtons,
   enableButtons,
+  disableButtons,
   playCompletedSoundEffect,
-} from "../../HelperFunctions.js";
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+} from "../../functions.js";
 
 const BubbleSort = async (array, animationSpeed, barRefs) => {
   disableButtons();
-  const animations = getBubbleSortAnimations(array);
 
-  for (let i = 0; i < animations.length; i += 5) {
-    const [idx1, idx2, doSwap, isFinal, finalIdx] = [
-      animations[i],
-      animations[i + 1],
-      animations[i + 2],
-      animations[i + 3],
-      animations[i + 4],
-    ];
+  const n = array.length;
 
-    const barOne = barRefs.current[idx1];
-    const barTwo = barRefs.current[idx2];
+  for (let i = 0; i < n - 1; i++) {
+    for (let j = 0; j < n - i - 1; j++) {
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          changeBackgroundColor(barRefs, j, "rgba(0,0,255, 0.9)");
+          changeBackgroundColor(barRefs, j + 1, "rgba(0,0,0, 0.9)");
 
-    changeBackgroundColor(barOne, "rgba(255,165,0, 0.9)");
-    changeBackgroundColor(barTwo, "rgba(255,165,0, 0.9)");
+          if (array[j] > array[j + 1]) {
+            swapBars(barRefs, j, j + 1);
+            // swap the values in the array as well so logic is correct
+            let temp = array[j];
+            array[j] = array[j + 1];
+            array[j + 1] = temp;
+          }
+          resolve();
+        }, animationSpeed);
+      });
 
-    await sleep(animationSpeed);
-
-    if (doSwap) {
-      changeBackgroundColor(barOne, "rgba(144,238,144, 0.9)");
-      changeBackgroundColor(barTwo, "rgba(144,238,144, 0.9)");
-      swapBars(barOne, barTwo);
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          changeBackgroundColor(barRefs, j, "rgba(225, 0, 120, 0.6)");
+          changeBackgroundColor(barRefs, j + 1, "rgba(225, 0, 120, 0.6)");
+          resolve();
+        }, animationSpeed);
+      });
     }
-
-    await sleep(animationSpeed);
-
-    if (isFinal) {
-      const finalBar = barRefs.current[finalIdx];
-      changeBackgroundColor(finalBar, "rgba(0, 164, 86, 0.6)");
-      changeBoxShadow(finalBar, "5px 5px 50px 5px rgba(0, 164, 86, 0.2)");
-    } else {
-      changeBackgroundColor(barOne, "rgba(225, 0, 120, 0.6)");
-      changeBoxShadow(barOne, "rgba(225, 0, 120, 0.2)");
-    }
+    // Mark final sorted element
+    changeBackgroundColor(barRefs, n - i - 1, "rgba(0, 164, 86, 0.6)");
+    changeBoxShadow(barRefs, n - i - 1, "5px 5px 50px 5px rgba(0, 164, 86, 0.2)");
   }
 
-  await sleep(animationSpeed);
-  resetBarStyleDefault(barRefs);
+  // Mark first element as sorted too
+  changeBackgroundColor(barRefs, 0, "rgba(0, 164, 86, 0.6)");
+  changeBoxShadow(barRefs, 0, "5px 5px 50px 5px rgba(0, 164, 86, 0.2)");
+
   playCompletedSoundEffect();
   enableButtons();
 };

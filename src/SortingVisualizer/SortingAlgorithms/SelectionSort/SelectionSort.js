@@ -1,3 +1,12 @@
+import {
+  swapBars,
+  changeBackgroundColor,
+  changeBoxShadow,
+  enableButtons,
+  disableButtons,
+  playCompletedSoundEffect,
+} from "../../functions.js";
+
 const SelectionSort = async (array, animationSpeed, barRefs) => {
   disableButtons();
   const animations = getSelectionSortAnimations(array);
@@ -12,16 +21,14 @@ const SelectionSort = async (array, animationSpeed, barRefs) => {
 
     await new Promise((resolve) => {
       setTimeout(() => {
-        barRefs.current[minIndexElement].style.backgroundColor = "rgba(0,0,255, 0.9)";
-        barRefs.current[comparingElement1].style.backgroundColor = "rgba(0,0,0, 0.9)";
-        barRefs.current[comparingElement2].style.backgroundColor = "rgba(255,165,0, 0.9)";
+        changeBackgroundColor(barRefs, minIndexElement, "rgba(0,0,255, 0.9)");
+        changeBackgroundColor(barRefs, comparingElement1, "rgba(0,0,0, 0.9)");
+        changeBackgroundColor(barRefs, comparingElement2, "rgba(255,165,0, 0.9)");
 
         if (doSwap) {
-          barRefs.current[minIndexElement].style.backgroundColor = "rgba(144,238,144, 0.9)";
-          barRefs.current[comparingElement1].style.backgroundColor = "rgba(144,238,144, 0.9)";
-          const tempHeight = barRefs.current[comparingElement1].style.height;
-          barRefs.current[comparingElement1].style.height = barRefs.current[minIndexElement].style.height;
-          barRefs.current[minIndexElement].style.height = tempHeight;
+          changeBackgroundColor(barRefs, minIndexElement, "rgba(144,238,144, 0.9)");
+          changeBackgroundColor(barRefs, comparingElement1, "rgba(144,238,144, 0.9)");
+          swapBars(barRefs, comparingElement1, minIndexElement);
         }
 
         resolve();
@@ -31,11 +38,11 @@ const SelectionSort = async (array, animationSpeed, barRefs) => {
     await new Promise((resolve) => {
       setTimeout(() => {
         if (isFinalElement) {
-          barRefs.current[finalElement].style.backgroundColor = "rgba(0, 164, 86, 0.6)";
-          barRefs.current[finalElement].style.boxShadow = "5px 5px 50px 5px rgba(0, 164, 86, 0.2)";
+          changeBackgroundColor(barRefs, finalElement, "rgba(0, 164, 86, 0.6)");
+          changeBoxShadow(barRefs, finalElement, "5px 5px 50px 5px rgba(0, 164, 86, 0.2)");
         } else {
-          barRefs.current[comparingElement2].style.backgroundColor = "rgba(225, 0, 120, 0.6)";
-          barRefs.current[minIndexElement].style.backgroundColor = "rgba(225, 0, 120, 0.6)";
+          changeBackgroundColor(barRefs, comparingElement2, "rgba(225, 0, 120, 0.6)");
+          changeBackgroundColor(barRefs, minIndexElement, "rgba(225, 0, 120, 0.6)");
         }
         resolve();
       }, animationSpeed);
@@ -45,8 +52,8 @@ const SelectionSort = async (array, animationSpeed, barRefs) => {
   await new Promise((resolve) => {
     setTimeout(() => {
       for (let i = 0; i < array.length; i++) {
-        barRefs.current[i].style.backgroundColor = "";
-        barRefs.current[i].style.boxShadow = "";
+        changeBackgroundColor(barRefs, i, "");
+        changeBoxShadow(barRefs, i, "");
       }
       playCompletedSoundEffect();
       enableButtons();
